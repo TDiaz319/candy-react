@@ -64,6 +64,22 @@ function App() {
     }
   }
 
+const moveSquareBelow = () => {
+  for (let i = 0; i<64 - width; i++ ){
+    const firstRow = [0, 1, 2, 3, 4, 5, 6, 7]
+    const isFirstRow = firstRow.includes(i)
+
+    if (isFirstRow && currentColorArray[i] === '') {
+      let randomNumber = Math.floor(Math.random() * candyColors.length)
+      currentColorArray[i] = candyColors[randomNumber]
+    }
+    if((currentColorArray[i + width]) === '') {
+      currentColorArray[i + width] = currentColorArray[i]
+      currentColorArray[i] = ''
+    }
+  }
+}
+
 const createBoard = () => {
   const randomColorArray = []
   for (let i =0; i<width * width; i++){
@@ -83,11 +99,12 @@ useEffect (() => {
     checkColumnOfFour()
     checkRowOfFour ()
     checkRowOfThree()
+    moveSquareBelow ()
     setCurrentColorArray([...currentColorArray])
-  },100)
+  },1000)
   return () => clearInterval(timer)
 
-}, [checkColumnOfFour, checkRowOfFour, checkColumnOfThree, checkRowOfThree, setCurrentColorArray])
+}, [checkColumnOfFour, checkRowOfFour, checkColumnOfThree, checkRowOfThree, moveSquareBelow, setCurrentColorArray])
 console.log (currentColorArray)
 
   return (
